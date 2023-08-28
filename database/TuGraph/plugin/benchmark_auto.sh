@@ -1,5 +1,9 @@
-SEED_FILE="../../../dataset/seeds/twitter_rv.net-seed"
+SEED_FILE="../../../seeds/twitter_rv.net-seed"
 num_iterations=10
+
+if [ ! -d "results" ]; then
+    mkdir results
+fi
 
 # Khop
 python3 benchmark.py khop ${SEED_FILE} 300 1 latency
@@ -15,14 +19,14 @@ python3 benchmark.py pagerank ${num_iterations}
 
 # label propagation
 echo "test label propagation..."
-python3 benchmark.py label_propagation ${num_iterations}
+python3 benchmark.py lpa ${num_iterations}
 
 # wcc
 echo "test wcc..."
-python3 benchmark.py weakly_connected_components
+python3 benchmark.py wcc
 
 # sssp
-echo "test singel source shortest path"
+echo "test single source shortest path"
 python3 benchmark.py sssp ${SEED_FILE} 300
 
 # bfs

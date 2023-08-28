@@ -16,13 +16,13 @@
     ],
     "files" : [
         {
-            "path" : "/root/tugraph/twitter_rv.net_unique_node",
+            "path" : "/root/data/twitter/twitter_rv.net_unique_node",
             "format" : "CSV",
             "label" : "user",
             "columns" : ["name"]
         },
         {
-            "path" : "/root/tugraph/twitter_rv.net",
+            "path" : "/root/data/twitter/twitter_rv.net",
             "format" : "CSV",
             "label" : "weight",
             "SRC_ID": "user",

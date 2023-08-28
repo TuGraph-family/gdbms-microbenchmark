@@ -4,7 +4,7 @@
 
 # 目录说明
 
-- database：包括了图数据库的测试说明文档和测试程序、配置文件等，每个图数据库如何测试请参考每个图数据库下面的readme.md文档
+- database：包括了TuGraph的测试说明文档和测试程序、配置文件等
 - seeds：测试用的数据随机种子
   - twitter_rv.net-seed：twitter2010数据集的种子
 

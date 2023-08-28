@@ -10,7 +10,7 @@ from tornado.ioloop import *
 from tornado.httputil import url_concat
 
 # Global values
-url_base = 'http://127.0.0.1:7071'
+url_base = 'http://127.0.0.1:7070'
 username = 'admin'
 password = '73@TuGraph'
 output_dir = 'results'
@@ -53,7 +53,7 @@ class BaseBenchmark:
                 exit()
 
 
-class LightGraphBenchmark(BaseBenchmark):
+class Benchmark(BaseBenchmark):
     def __init__(self, url_base, user, password, output_dir='./result'):
         BaseBenchmark.__init__(self)
         self.session = requests.Session()
@@ -64,7 +64,7 @@ class LightGraphBenchmark(BaseBenchmark):
         self.output_dir = output_dir
 
     def init_log(self, path='', print_screen=False):
-        self.logger = logging.getLogger('LightGraphBenchmark')
+        self.logger = logging.getLogger('Benchmark')
         if path:
             file_handler = logging.FileHandler(path, mode='w')
             self.logger.addHandler(file_handler)
@@ -85,7 +85,7 @@ class LightGraphBenchmark(BaseBenchmark):
             headers['Authorization'] = 'Bearer ' + json.loads(r.text)['jwt']
             return headers
 
-    def handle_lightninggraph_request(self, response):
+    def handle_tugraph_request(self, response):
         if len(logging.root.handlers) > 0:
             logging.root.removeHandler(logging.root.handlers[0])
         self.recv += 1
@@ -113,7 +113,7 @@ class LightGraphBenchmark(BaseBenchmark):
         query_size = len(roots)
         url = '%s/db/default/cpp_plugin/%s' % (self.url_base, plugin_name)
         for i in range(query_size):
-            data = json.dumps({'root': int(roots[i]), 'depth': int(depth), 'label': node_label, 'field': node_field})
+            data = json.dumps({'root': roots[i], 'depth': int(depth), 'label': node_label, 'field': node_field})
             data = json.dumps({'data': str(data)})
             res, time = self.post(url, data)
             neighbor_size = json.loads(res.json()['result'])['size']
@@ -135,13 +135,13 @@ class LightGraphBenchmark(BaseBenchmark):
         url = '%s/db/cpp_plugin/%s' % (self.url_base, plugin_name)
         for root in roots:
             data = json.dumps({
-                'root': int(root),
+                'root': root,
                 'depth': int(depth),
                 'label': 'user',
                 'field': 'name'})
             data = json.dumps({'data': str(data)})
             http_client.fetch(url, headers=self.headers, method="POST", body=data,
-                              callback=self.handle_lightninggraph_request, connect_timeout=3600, request_timeout=3600)
+                              callback=self.handle_tugraph_request, connect_timeout=3600, request_timeout=3600)
         self.total_requests = len(roots)
         self.bad = self.completed = self.recv = 0
         self.total_size = 0
@@ -198,7 +198,7 @@ class LightGraphBenchmark(BaseBenchmark):
         total_time = 0
         query_size = len(roots)
         for i in range(query_size):
-            data = json.dumps({'root_id': int(roots[i]), 'label': 'user', 'field': 'name', 'output_to_file': False})
+            data = json.dumps({'root_id': roots[i], 'label': 'user', 'field': 'name', 'output_to_file': False})
             data = json.dumps({'data': str(data)})
             res, time = self.post(url, data)
             print('seed %d: %s' % (i, res.json()))
@@ -216,7 +216,7 @@ class LightGraphBenchmark(BaseBenchmark):
         total_time = 0
         query_size = len(roots)
         for i in range(query_size):
-            data = json.dumps({'root_id': int(roots[i]), 'label': 'user', 'field': 'name', 'output_to_file': False})
+            data = json.dumps({'root_id': roots[i], 'label': 'user', 'field': 'name', 'output_to_file': False})
             data = json.dumps({'data': str(data)})
             res, time = self.post(url, data)
             print('seed %d: %s' % (i, res.json()))
@@ -247,7 +247,7 @@ class LightGraphBenchmark(BaseBenchmark):
 
 
 if __name__ == '__main__':
-    lgb = LightGraphBenchmark(url_base=url_base,
+    lgb = Benchmark(url_base=url_base,
                               user=username,
                               password=password,
                               output_dir=output_dir)
@@ -259,9 +259,9 @@ if __name__ == '__main__':
         lgb.run_bfs(*argv[1:])
     elif len(argv) == 3 and argv[1] == 'pagerank':
         lgb.run_pagerank(*argv[1:])
-    elif len(argv) == 3 and argv[1] == 'label_propagation':
+    elif len(argv) == 3 and argv[1] == 'lpa':
         lgb.run_lpa(*argv[1:])
-    elif len(argv) == 2 and argv[1] == 'weakly_connected_components':
+    elif len(argv) == 2 and argv[1] == 'wcc':
         lgb.run_wcc(*argv[1:])
     elif len(argv) == 2 and argv[1] == 'lcc':
         lgb.run_lcc(*argv[1:])
@@ -271,8 +271,8 @@ if __name__ == '__main__':
         print('usage:')
         print('python3 benchmark.py khop [seed_file] [count] [depth] [mode:latency/throughput] [num_threads=32]')
         print('python3 benchmark.py pagerank [num_iterations]')
-        print('python3 benchmark.py label_propagation [num_iterations]')
-        print('python3 benchmark.py weakly_connected_components')
+        print('python3 benchmark.py lpa [num_iterations]')
+        print('python3 benchmark.py wcc')
         print('python3 benchmark.py lcc')
         print('python3 benchmark.py sssp [seed_file] [count]')
         print('python3 benchmark.py bfs [seed_file] [count]')

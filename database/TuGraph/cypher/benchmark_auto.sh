@@ -1,4 +1,8 @@
-SEED_FILE="../../../dataset/seeds/twitter_rv.net-seed"
+SEED_FILE="../../../seeds/twitter_rv.net-seed"
+
+if [ ! -d "results" ]; then
+    mkdir results
+fi
 
 python3 cypher-benchmark.py khop-single ${SEED_FILE} 1 300
 python3 cypher-benchmark.py khop-single ${SEED_FILE} 2 300

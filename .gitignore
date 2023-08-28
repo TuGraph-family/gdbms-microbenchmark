@@ -1,3 +1,12 @@
 .idea
 venv
 *.db
+
+database/TuGraph/cypher/results
+database/TuGraph/cypher/__pycache__/
+
+database/TuGraph/plugin/results
+
+database/TuGraph/import/.import_tmp/
+
+*lgraph.pid

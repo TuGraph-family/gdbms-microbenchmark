@@ -7,14 +7,11 @@ from TuGraphClient import TuGraphClient
 
 class CypherTest:
     def __init__(self):
-        # host_port = "127.0.0.1:7073"
-        host_port = "127.0.0.1:7071"
+        host_port = "127.0.0.1:7070"
         username = "admin"
         password = "73@TuGraph"
         self.client = TuGraphClient(host_port, username, password)
         self.khop_cluases = [
-            # "MATCH (n:user {name: %s}) -[:weight]-> (b) return count(distinct b)",
-            # "MATCH (n:user {name: %s}) -[:weight]-> () -[:weight]-> (b) return count(distinct b)",
             "MATCH (n:user {name: %s}) -[:weight *0..1]-> (b) return count(distinct b)",
             "MATCH (n:user {name: %s}) -[:weight *0..2]-> (b) return count(distinct b)",
             "MATCH (n:user {name: %s}) -[:weight *0..3]-> (b) return count(distinct b)",
