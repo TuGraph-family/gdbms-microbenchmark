@@ -12,6 +12,6 @@
 
 - twitter数据：
   - 点数据：https://tugraph-web.oss-cn-beijing.aliyuncs.com/tugraph/datasets/twitter/twitter_rv.net_unique_node
-  - 边数据：twitter数据分卷存储，将下面2个分卷分别下载之后，使用`cat twitter_rv.tar.gz.a* > witter_rv.tar.gz`再行解压即可
+  - 边数据：twitter数据分卷存储，将下面2个分卷分别下载之后，使用`cat twitter_rv.tar.gz.a* > twitter_rv.tar.gz`再行解压`tar zxvf twitter_rv.tar.gz`即可
     - https://tugraph-web.oss-cn-beijing.aliyuncs.com/tugraph/datasets/twitter/twitter_rv.tar.gz.aa
     - https://tugraph-web.oss-cn-beijing.aliyuncs.com/tugraph/datasets/twitter/twitter_rv.tar.gz.ab
